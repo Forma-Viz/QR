@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FormaViz</title>
+
+    <!-- Google Font (modern / luxury feel) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .container {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1.5s ease forwards;
+        }
+
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            letter-spacing: 0.15em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            color: #aaa;
+            letter-spacing: 0.25em;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* subtle glow */
+        .title::after {
+            content: "";
+            display: block;
+            width: 60%;
+            height: 1px;
+            margin: 20px auto 0;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="title">Powered by FormaViz INC</div>
+        <div class="subtitle">VISUALIZATION • EXPERIENCE • DESIGN</div>
+    </div>
+
+</body>
+</html>
