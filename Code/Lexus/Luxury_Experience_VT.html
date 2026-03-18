@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Luxury Experience</title>
+
+  <!-- Elegant serif + clean sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0b0b0c;
+      --bg2: #141416;
+      --text: #f3f3f1;
+      --muted: rgba(255,255,255,0.65);
+      --line: rgba(255,255,255,0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05), transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03), transparent 35%),
+        linear-gradient(135deg, var(--bg), var(--bg2));
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .page {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .shell {
+      width: min(100%, 1100px);
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(40px, 8vw, 90px);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .content {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px; /* MORE SPACE overall */
+      width: 100%;
+      max-width: 700px;
+    }
+
+    /* LOGO (larger + more presence) */
+    .logo {
+      width: clamp(180px, 28vw, 320px);
+      opacity: 0;
+      transform: translateY(-20px);
+      animation: fadeUp 1s ease forwards;
+    }
+
+    /* HEADLINE (luxury serif + lots of breathing room) */
+    .headline {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      line-height: 1.25;
+      margin: 20px 0 200px; /* EXTRA vertical space */
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s ease forwards;
+      animation-delay: 0.3s;
+    }
+
+    /* BUTTON */
+    .cta {
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      padding: 16px 34px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s ease forwards;
+      animation-delay: 0.6s;
+    }
+
+    .cta:hover {
+      background: rgba(255,255,255,0.12);
+      transform: translateY(-2px);
+    }
+
+    /* COUNTDOWN */
+    .countdown {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp 1s ease forwards;
+      animation-delay: 0.9s;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .content {
+        gap: 32px;
+      }
+
+      .headline {
+        letter-spacing: 0.14em;
+      }
+
+      .cta {
+        width: 100%;
+        max-width: 280px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="page">
+    <div class="shell">
+      <div class="content">
+
+        <img class="logo" src="Assets/Images/Lexus_Logo.png" alt="Lexus Logo">
+
+        <h1 class="headline">Luxury Experience</h1>
+
+        <button class="cta" id="tourButton">View Virtual Tour</button>
+
+        <div class="countdown" id="countdownText"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 🔧 CHANGE THIS ONLY
+    const redirectURL = "https://storage.net-fs.com/hosting/6967371/17/";
+
+    const delay = 10000;
+    const btn = document.getElementById("tourButton");
+    const countdown = document.getElementById("countdownText");
+
+    let seconds = 10;
+
+    function go() {
+      window.location.href = redirectURL;
+    }
+
+    btn.addEventListener("click", go);
+
+    function updateCountdown() {
+      if (seconds > 0) {
+        countdown.textContent = `Redirecting in ${seconds}s`;
+        seconds--;
+      } else {
+        countdown.textContent = "";
+      }
+    }
+
+    updateCountdown();
+    const interval = setInterval(() => {
+      updateCountdown();
+      if (seconds < 0) clearInterval(interval);
+    }, 1000);
+
+    setTimeout(go, delay);
+  </script>
+
+</body>
+</html>
