@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Code Generator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+  <style>
+    :root {
+      --bg: #0b0b0d;
+      --panel: #141419;
+      --panel-2: #1b1b22;
+      --text: #f5f5f7;
+      --muted: #9ea3ad;
+      --line: #2a2d35;
+      --accent: #ffffff;
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, #1a1a24 0%, #0b0b0d 45%),
+        #0b0b0d;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 720px;
+      background: rgba(20, 20, 25, 0.9);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+      backdrop-filter: blur(8px);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    p {
+      margin: 0 0 20px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .field {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    label {
+      font-size: 0.95rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    input[type="url"],
+    input[type="number"] {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    input:focus {
+      border-color: #5b6270;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.05);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 180px;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .secondary {
+      background: #262a33;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .secondary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .qr-panel {
+      background: #111318;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 320px;
+    }
+
+    #qrPreview {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #qrPreview canvas,
+    #qrPreview img {
+      width: min(100%, 320px);
+      height: auto;
+      display: block;
+      border-radius: 10px;
+      background: white;
+      padding: 12px;
+    }
+
+    .hint {
+      margin-top: 14px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      .wrap {
+        padding: 22px;
+      }
+
+      .qr-panel {
+        min-height: 260px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>QR Code Generator</h1>
+    <p>Paste a web address, generate a clean high-resolution QR code, and download it as a PNG.</p>
+
+    <div class="field">
+      <label for="urlInput">Web Address</label>
+      <input
+        id="urlInput"
+        type="url"
+        placeholder="https://example.com"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="fileNameInput">Download File Name</label>
+        <input
+          id="fileNameInput"
+          type="text"
+          value="qrcode"
+          placeholder="qrcode"
+        />
+      </div>
+
+      <div class="field">
+        <label for="downloadSizeInput">Download Size (px)</label>
+        <input
+          id="downloadSizeInput"
+          type="number"
+          min="512"
+          step="256"
+          value="2048"
+        />
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="generateBtn">Generate QR Code</button>
+      <button class="secondary" id="downloadBtn" disabled>Download PNG</button>
+    </div>
+
+    <div class="qr-panel">
+      <div id="qrPreview"></div>
+    </div>
+
+    <div class="hint">
+      Preview is optimized for screen. Download exports a high-resolution PNG.
+    </div>
+  </div>
+
+  <script>
+    const urlInput = document.getElementById("urlInput");
+    const fileNameInput = document.getElementById("fileNameInput");
+    const downloadSizeInput = document.getElementById("downloadSizeInput");
+    const generateBtn = document.getElementById("generateBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const qrPreview = document.getElementById("qrPreview");
+
+    let lastUrl = "";
+    let lastMatrixCount = 0;
+
+    function normalizeUrl(value) {
+      const trimmed = value.trim();
+      if (!trimmed) return "";
+
+      if (/^https?:\/\//i.test(trimmed)) {
+        return trimmed;
+      }
+
+      return "https://" + trimmed;
+    }
+
+    function buildQRData(url) {
+      const qr = qrcode(0, "M");
+      qr.addData(url);
+      qr.make();
+      return qr;
+    }
+
+    function renderPreview(url) {
+      qrPreview.innerHTML = "";
+
+      const qr = buildQRData(url);
+      lastMatrixCount = qr.getModuleCount();
+
+      const cellSize = 8;
+      const marginCells = 4;
+      const size = (lastMatrixCount + marginCells * 2) * cellSize;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = size;
+      canvas.height = size;
+
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, size, size);
+
+      for (let row = 0; row < lastMatrixCount; row++) {
+        for (let col = 0; col < lastMatrixCount; col++) {
+          ctx.fillStyle = qr.isDark(row, col) ? "#000000" : "#ffffff";
+          ctx.fillRect(
+            (col + marginCells) * cellSize,
+            (row + marginCells) * cellSize,
+            cellSize,
+            cellSize
+          );
+        }
+      }
+
+      qrPreview.appendChild(canvas);
+      lastUrl = url;
+      downloadBtn.disabled = false;
+    }
+
+    function downloadHighResQR() {
+      if (!lastUrl) return;
+
+      const requestedSize = parseInt(downloadSizeInput.value, 10) || 2048;
+      const exportSize = Math.max(512, requestedSize);
+
+      const qr = buildQRData(lastUrl);
+      const moduleCount = qr.getModuleCount();
+      const marginCells = 4;
+
+      const totalCells = moduleCount + marginCells * 2;
+      const cellSize = Math.floor(exportSize / totalCells);
+      const actualSize = totalCells * cellSize;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = actualSize;
+      canvas.height = actualSize;
+
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, actualSize, actualSize);
+
+      for (let row = 0; row < moduleCount; row++) {
+        for (let col = 0; col < moduleCount; col++) {
+          ctx.fillStyle = qr.isDark(row, col) ? "#000000" : "#ffffff";
+          ctx.fillRect(
+            (col + marginCells) * cellSize,
+            (row + marginCells) * cellSize,
+            cellSize,
+            cellSize
+          );
+        }
+      }
+
+      const link = document.createElement("a");
+      const safeName = (fileNameInput.value || "qrcode").trim().replace(/[<>:"/\\|?*\x00-\x1F]/g, "_");
+      link.download = `${safeName}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }
+
+    generateBtn.addEventListener("click", () => {
+      const url = normalizeUrl(urlInput.value);
+
+      if (!url) {
+        alert("Please enter a web address.");
+        urlInput.focus();
+        return;
+      }
+
+      try {
+        new URL(url);
+        renderPreview(url);
+      } catch {
+        alert("Please enter a valid web address.");
+        urlInput.focus();
+      }
+    });
+
+    downloadBtn.addEventListener("click", downloadHighResQR);
+
+    urlInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        generateBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>
