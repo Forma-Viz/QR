@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Luxury Experience</title>
 
-  <!-- Elegant serif + clean sans -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-5R928RYMYJ"></script>
@@ -33,6 +30,20 @@
       box-sizing: border-box;
     }
 
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('Assets/Fonts/Satoshi-Regular.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('Assets/Fonts/Satoshi-Bold.woff') format('woff');
+      font-weight: 700;
+      font-style: normal;
+    }
+
     html, body {
       margin: 0;
       height: 100%;
@@ -41,7 +52,7 @@
         radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03), transparent 35%),
         linear-gradient(135deg, var(--bg), var(--bg2));
       color: var(--text);
-      font-family: 'Inter', sans-serif;
+      font-family: 'Satoshi', sans-serif;
     }
 
     .page {
@@ -84,8 +95,8 @@
 
     /* HEADLINE (luxury serif + lots of breathing room) */
     .headline {
-      font-family: 'Playfair Display', serif;
-      font-weight: 400;
+      font-family: 'Satoshi', sans-serif;
+      font-weight: 700;
       font-size: clamp(2rem, 5vw, 3.8rem);
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -122,6 +133,8 @@
 
     /* COUNTDOWN */
     .countdown {
+      font-family: 'Satoshi', sans-serif;
+      font-weight: 400;
       font-size: 0.8rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
